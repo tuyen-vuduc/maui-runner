@@ -1,17 +1,15 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using System.Diagnostics;
-using System.Text;
-using System.Text.Json;
 using MauiRunner;
 
 Console.WriteLine("==================");
 Console.WriteLine("MAUI RUNNER");
 Console.WriteLine("==================");
 
-var deviceService = new DevicesService();
+var devicesManager = new DevicesManager();
 
-var devices = deviceService.GetAvailableDevices();
+var devices = devicesManager.GetDevices();
 
 if (devices.Count == 0)
 {

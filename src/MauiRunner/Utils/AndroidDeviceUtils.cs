@@ -20,7 +20,7 @@ public static class AndroidDeviceUtils
     /// </summary>
     /// <param name="input">A line of device info from `adb devices -l`</param>
     /// <returns>An instance of AndroidDeviceDto if given string is a valid Android info string</returns>
-    public static AndroidDeviceDto? Parse(string input)
+    public static AndroidDeviceDto? Parse(string? input)
     {
         if (string.IsNullOrWhiteSpace(input) || !input.Contains(ARG_VALUE_DELIMITER)) return null;
 

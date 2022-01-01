@@ -5,86 +5,28 @@ using System.Text.Json;
 
 namespace MauiRunner;
 
-public class DevicesService
+public class DevicesManager : IDeviceSource
 {
-	public DevicesService()
-	{
-	}
+    IList<IDeviceSource> deviceSources;
 
-	public IList<IDevice> GetAvailableDevices()
+    public DevicesManager()
     {
-		var bootedSimulators = GetBootedSimulators();
-		var androidDevices = GetAndroidDevices();
+        deviceSources = new List<IDeviceSource>
+        {
+            new AndroidDeviceSource(),
+            new IOSSimulatorSource(),
+        };
+    }
 
-		return bootedSimulators
-			.Concat(androidDevices)
-			.ToList();
-	}
-
-    List<IDevice> GetAndroidDevices()
+    public IList<IDevice> GetDevices()
     {
-        var processStartInfo = new ProcessStartInfo
-        {
-            Arguments = "devices -l",
-            FileName = "adb",
-            UseShellExecute = false,
-            RedirectStandardOutput = true,
-            CreateNoWindow = true
-        };
-
-        var process = new Process()
-        {
-            StartInfo = processStartInfo,
-        };
-        process.Start();
-
         var devices = new List<IDevice>();
-        while (!process.StandardOutput.EndOfStream)
-        {
-            string line = process.StandardOutput.ReadLine();
 
-            var device = AndroidDeviceUtils.Parse(line);
-
-            if (device == null) continue;
-
-            devices.Add(device);
+        foreach (var deviceSource in deviceSources) {
+            devices.AddRange(deviceSource.GetDevices());
         }
 
         return devices;
-    }
-
-    List<IDevice> GetBootedSimulators()
-    {
-        var processStartInfo = new ProcessStartInfo
-        {
-            Arguments = "simctl list -j devices booted",
-            FileName = "xcrun",
-            UseShellExecute = false,
-            RedirectStandardOutput = true,
-            CreateNoWindow = true
-        };
-
-        var process = new Process()
-        {
-            StartInfo = processStartInfo,
-        };
-        process.Start();
-
-        var stringBuilder = new StringBuilder();
-        while (!process.StandardOutput.EndOfStream)
-        {
-            string line = process.StandardOutput.ReadLine();
-
-            stringBuilder.Append(line);
-        }
-
-        var serializeOptions = new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        };
-        var json = stringBuilder.ToString();
-        var data = JsonSerializer.Deserialize<SimulatorGroupDto>(json, serializeOptions);
-        return data.Devices.SelectMany(x => x.Value).Cast<IDevice>().ToList();
     }
 }
 
