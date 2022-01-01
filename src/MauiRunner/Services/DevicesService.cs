@@ -43,18 +43,11 @@ public class DevicesService
         {
             string line = process.StandardOutput.ReadLine();
 
-            if (!line.Contains(":")) continue;
+            var device = AndroidDeviceUtils.Parse(line);
 
-            var parts = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            if (device == null) continue;
 
-            devices.Add(new AndroidDeviceDto
-            {
-                ID = parts[0],
-                Model = parts.FirstOrDefault(x => x.StartsWith("model:"))?.Split(':').Last(),
-                Product = parts.FirstOrDefault(x => x.StartsWith("product:"))?.Split(':').Last(),
-                Device = parts.FirstOrDefault(x => x.StartsWith("device:"))?.Split(':').Last(),
-                TransportId = int.Parse(parts.First(x => x.StartsWith("transport_id:"))?.Split(':').Last())
-            });
+            devices.Add(device);
         }
 
         return devices;
@@ -88,7 +81,6 @@ public class DevicesService
         var serializeOptions = new JsonSerializerOptions
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            WriteIndented = true
         };
         var json = stringBuilder.ToString();
         var data = JsonSerializer.Deserialize<SimulatorGroupDto>(json, serializeOptions);
