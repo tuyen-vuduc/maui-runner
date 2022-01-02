@@ -12,7 +12,9 @@ For more information how to setup a MacoS machine ton run MAUI application, plea
 # Installation
 
 ```
-dotnet tool install MauiRunner -g --version 0.0.1 --add-source https://www.myget.org/F/newwavesolutions/api/v3/index.json
+dotnet tool install MauiRunner -g \
+    --version 0.0.2 \
+    --add-source https://www.myget.org/F/newwavesolutions/api/v3/index.json
 ```
 
 # Usage
