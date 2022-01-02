@@ -29,11 +29,13 @@ public static class AppleDeviceUtils {
                     : name.Contains("Apple TV")
                     ? "tvos"
                     : "ios";
+        var isSimulator = name.Contains("Simulator");
 
         return new AppleDeviceDto {
             Udid = udid,
             Name = name,
-            OS = os
+            OS = os,
+            IsSimulator = isSimulator,
         };
     }
 }
