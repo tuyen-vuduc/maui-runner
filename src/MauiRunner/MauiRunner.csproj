@@ -23,6 +23,8 @@
     <Product>DotnetTools</Product>
     <Description>A tool to quickly run a MAUI application on iOS simulators/Android devices</Description>
     <Copyright>Copyright © 2022</Copyright>
+    <PackageDescription>A tool to quickly run a MAUI application on iOS simulators/Android devices</PackageDescription>
+    <RepositoryUrl>https://github.com/tuyen-vuduc/maui-runner</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Services\" />
