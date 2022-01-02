@@ -13,8 +13,8 @@ public class DevicesManager : IDeviceSource
     {
         deviceSources = new List<IDeviceSource>
         {
-            new AndroidDeviceSource(),
-            new IOSSimulatorSource(),
+            new AndroidEmulatorAndDeviceSource(),
+            new AppleSimulatorAndDeviceSource(),
         };
     }
 

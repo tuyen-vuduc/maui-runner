@@ -9,4 +9,5 @@ public class AndroidDeviceDto : IDevice
     public string TransportId { get; set; }
     public string Device { get; set; }
     public string Name => Model;
+    public string OS => "android";
 }
